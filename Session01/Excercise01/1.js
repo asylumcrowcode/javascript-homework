@@ -1,4 +1,4 @@
-let input = 12000.123;
+let input = 12000000.123;
 
 let commaNumber = function (number) {
     let temp = String(number);
@@ -12,7 +12,8 @@ let commaNumber = function (number) {
         }
     }
     //arr.push(temp.substring(dotPos, temp.length));
-    console.log(arr.join() + temp.substring(dotPos, temp.length));
+    console.log('output: ' + arr.join() + temp.substring(dotPos, temp.length));
 }
 
+console.log('input: ' + input);
 commaNumber(input);

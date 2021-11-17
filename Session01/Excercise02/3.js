@@ -5,4 +5,5 @@ let randomElement = function (arr) {
     return arr[randomIndex];
 }
 
-console.log(randomElement(arr));
+console.log('input: ' + arr);
+console.log('output: ' + randomElement(arr));

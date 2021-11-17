@@ -6,8 +6,9 @@ let wordCount = function (input) {
         for (let i = 0; i < input.length; i++) {
             if (input[i] === input[i].toUpperCase()) count++;
         }
-        console.log(count);
+        console.log('output: ' + count);
     }
 }
 
+console.log('input: ' + input);
 wordCount(input);

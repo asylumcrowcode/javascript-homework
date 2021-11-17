@@ -8,4 +8,5 @@ let factorial = function (input) {
     }
 }
 
-console.log(factorial(input));
+console.log('input: ' + input);
+console.log('output: ' + factorial(input));

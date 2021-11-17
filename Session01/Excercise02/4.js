@@ -12,4 +12,8 @@ let missingElement = function (a, b) {
     return temp;
 }
 
-console.log(missingElement(a, b));
+
+console.log('input: ');
+console.log('a: ' + a);
+console.log('b: ' + b);
+console.log('output: ' + missingElement(a, b));
