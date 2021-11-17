@@ -1,29 +1,43 @@
-let garden = [[0, 0, 1], [0, 1, 1], [0, 1, 0], [0, 1, 1], [0, 0, 1]];
-const temp = [];
-let temp2 = [];
+let garden = [[0, 0, 0], [0, 1, 1], [0, 1, 0], [0, 1, 1], [0, 0, 0]];
+const result = [];
+let path = [];
 
 let gardenPath = function (x, y, garden) {
     if (garden[x][y] === 1) {
-        console.log(x + '' + y + '1');
-        if (x === 4) temp2 = [];
+        console.log(x + '' + y + ' 1');
+        if (x === 4) path = [];
     }
     else {
-        temp2.push(y);
+        path.push(y);
         if (x === 4) {
-            console.log(x + '' + y + '0');
-            let temp3 = temp2.slice();
-            temp.push(temp3);
-            temp2.pop();
+            console.log(x + '' + y + ' 0 end path');
+            let temp = path.slice();
+            result.push(temp);
+            path.pop();
         } else {
             for (let i = 0; i < 3; i++) {
-                gardenPath(x + 1, i, garden);
+                if (y === 0) {
+                    if (i === 0 || i === 1) {
+                        gardenPath(x + 1, i, garden);
+                    }
+                } else if (y === 1) {
+                    gardenPath(x + 1, i, garden);
+                } else {
+                    if (i === 1 || i === 2) {
+                        gardenPath(x + 1, i, garden);
+                    }
+                }
             }
         }
     }
 }
 
 for (let i = 0; i < 3; i++) {
-    gardenPath(0, i, garden);
+    if (garden[0][i] === 0) {
+        console.log('start');
+        path = [];
+        gardenPath(0, i, garden);
+    }
 }
 
-console.log(temp);
+console.log(result);
