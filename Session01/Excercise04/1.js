@@ -5,7 +5,7 @@ let thousands = ['nghin']
 let tenthousands = ['van']
 
 // let input = 999099;
-let input = 250055;
+let input = 50000;
 
 let speakNumber = function (input) {
     let temp = '';
