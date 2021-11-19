@@ -41,50 +41,57 @@ scoreLabel.style.fontSize = '30px';
 let topOffset = 10;
 let leftOffset = 10;
 
-gameManager.tiles.forEach(element => {
-    let tile = document.createElement('div');
-    document.body.appendChild(tile);
-    tile.style.position = 'absolute';
-    tile.style.top = `${topOffset}px`;
-    tile.style.left = `${leftOffset}px`;
-    tile.style.width = '100px';
-    tile.style.height = '100px';
-    tile.style.background = `url('${element.image}')`;
-    tile.style.backgroundColor = 'white';
-    tile.style.backgroundSize = 'cover';
-    tile.style.backgroundRepeat = 'no-repeat';
+let render = function () {
+    gameManager.tiles.forEach(element => {
+        let tile = document.createElement('div');
+        document.body.appendChild(tile);
+        tile.style.position = 'absolute';
+        tile.style.top = `${topOffset}px`;
+        tile.style.left = `${leftOffset}px`;
+        tile.style.width = '100px';
+        tile.style.height = '100px';
+        tile.style.background = `url('${element.image}')`;
+        tile.style.backgroundColor = 'white';
+        tile.style.backgroundSize = 'cover';
+        tile.style.backgroundRepeat = 'no-repeat';
 
-    tilesView.push(tile);
+        tilesView.push(tile);
 
-    let cover = document.createElement('div');
-    document.body.appendChild(cover);
-    cover.style.position = 'absolute';
-    cover.style.top = `${topOffset}px`;
-    cover.style.left = `${leftOffset}px`;
-    cover.style.width = '100px';
-    cover.style.height = '100px';
-    cover.style.border = '1px solid white';
-    cover.style.backgroundColor = 'orange';
+        let cover = document.createElement('div');
+        document.body.appendChild(cover);
+        cover.style.position = 'absolute';
+        cover.style.top = `${topOffset}px`;
+        cover.style.left = `${leftOffset}px`;
+        cover.style.width = '100px';
+        cover.style.height = '100px';
+        cover.style.border = '1px solid white';
+        cover.style.backgroundColor = 'orange';
 
-    let label = document.createElement('div');
-    cover.appendChild(label);
-    label.innerText = gameManager.tiles.indexOf(element) + 1;
-    label.style.position = 'inherit';
-    label.style.top = '30px'
-    label.style.left = '37px'
-    label.style.fontStyle = 'bold';
-    label.style.fontSize = '30px';
+        let label = document.createElement('div');
+        cover.appendChild(label);
+        label.innerText = gameManager.tiles.indexOf(element) + 1;
+        label.style.position = 'inherit';
+        label.style.top = '30px'
+        label.style.left = '37px'
+        label.style.fontStyle = 'bold';
+        label.style.fontSize = '30px';
 
-    covers.push(cover);
+        covers.push(cover);
 
-    leftOffset += 101;
-    if ((gameManager.tiles.indexOf(element) + 1) % 5 === 0) {
-        leftOffset = 10;
-        topOffset += 101;
-    }
-});
+        leftOffset += 101;
+        if ((gameManager.tiles.indexOf(element) + 1) % 5 === 0) {
+            leftOffset = 10;
+            topOffset += 101;
+        }
+    });
+}
+
+render();
 
 let restart = function () {
+    gameManager.init(20);
+    console.log(gameManager.tiles);
+
     tilesView.forEach(element => {
         element.style.display = 'initial';
     });
@@ -92,6 +99,13 @@ let restart = function () {
     covers.forEach(element => {
         element.style.display = 'initial';
     });
+
+    for (let i = 0; i < gameManager.tiles.length; i++) {
+        tilesView[i].style.background = `url('${gameManager.tiles[i].image}')`;
+        tilesView[i].style.backgroundColor = 'white';
+        tilesView[i].style.backgroundSize = 'cover';
+        tilesView[i].style.backgroundRepeat = 'no-repeat';
+    }
 
 
     mask.style.display = 'none';
