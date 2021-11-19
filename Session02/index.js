@@ -1,4 +1,3 @@
-import Tile from './Tile.js';
 import GameManager from './GameManager.js';
 
 
@@ -21,6 +20,14 @@ container.style.backgroundColor = 'grey';
 
 let mask = document.createElement('div');
 let scoreAdustment = document.createElement('div');
+
+let scoreAdjust = function (text, top, left, fontSize, color) {
+    scoreAdustment.innerText = text;
+    scoreAdustment.style.top = top;
+    scoreAdustment.style.left = left;
+    scoreAdustment.style.fontSize = fontSize;
+    scoreAdustment.style.color = color;
+}
 
 let scoreLabel = document.createElement('div');
 document.body.appendChild(scoreLabel);
@@ -103,19 +110,11 @@ covers.forEach(cover => {
         if (gameManager.selected.length == 2) {
             if (gameManager.selected[0][0] === gameManager.selected[1][0]) {
                 if (gameManager.score === 0 && gameManager.start) {
-                    scoreAdustment.innerText = '+ 10.000';
-                    scoreAdustment.style.top = '150px';
-                    scoreAdustment.style.left = '30px';
-                    scoreAdustment.style.fontSize = '120px';
-                    scoreAdustment.style.color = '#FFD700';
+                    scoreAdjust('+ 10.000', '150px', '30px', '120px', '#FFD700');
                     gameManager.score += 10000;
                     gameManager.start = !gameManager.start;
                 } else {
-                    scoreAdustment.innerText = '+ 1.000';
-                    scoreAdustment.style.top = '150px';
-                    scoreAdustment.style.left = '60px';
-                    scoreAdustment.style.fontSize = '120px';
-                    scoreAdustment.style.color = '#00FFFF';
+                    scoreAdjust('+ 1.000', '150px', '60px', '120px', '#00FFFF');
                     gameManager.score += 1000;
                 }
                 mask.style.display = 'initial';
@@ -127,11 +126,7 @@ covers.forEach(cover => {
                 }, 1000);
             } else {
                 if (!gameManager.start) {
-                    scoreAdustment.innerText = '- 500';
-                    scoreAdustment.style.top = '150px';
-                    scoreAdustment.style.left = '100px';
-                    scoreAdustment.style.fontSize = '120px';
-                    scoreAdustment.style.color = '#DC143C';
+                    scoreAdjust('- 500', '150px', '100px', '120px', '#DC143C');
                     gameManager.score -= 500;
                 } else { scoreAdustment.innerText = ''; }
                 mask.style.display = 'initial';
@@ -146,11 +141,7 @@ covers.forEach(cover => {
         }
 
         if (gameManager.score < 0) {
-            scoreAdustment.innerText = 'GAME OVER';
-            scoreAdustment.style.color = 'red';
-            scoreAdustment.style.top = '170px';
-            scoreAdustment.style.left = '50px';
-            scoreAdustment.style.fontSize = '70px';
+            scoreAdjust('GAME OVER', '170px', '50px', '70px', 'red');
             mask.style.display = 'initial';
             setTimeout(() => {
                 mask.style.display = 'none';
@@ -166,11 +157,7 @@ covers.forEach(cover => {
             }
         });
         if (check === false) {
-            scoreAdustment.innerText = 'CONGRATULATION';
-            scoreAdustment.style.color = '#7FFF00';
-            scoreAdustment.style.top = '180px';
-            scoreAdustment.style.left = '30px';
-            scoreAdustment.style.fontSize = '50px';
+            scoreAdjust('CONGRATULATIONS', '180px', '30px', '50px', '#7FFF00');
             mask.style.display = 'initial';
             setTimeout(() => {
                 mask.style.display = 'none';
