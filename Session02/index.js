@@ -1,19 +1,14 @@
 import Tile from './Tile.js';
+import GameManager from './GameManager.js';
 
-let tiles = [];
+
 let tilesView = [];
 let covers = [];
-let selected = [];
-let idList = [1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10];
-for (let i = 0; i < 20; i++) {
-    let randomPos = Math.floor(Math.random() * idList.length);
-    let id = idList[randomPos];
-    idList.splice(randomPos, 1);
-    let tile = new Tile();
-    tile.id = id;
-    tile.image = `./Session02/Resources/${id}.jpg`;
-    tiles.push(tile);
-}
+
+let gameManager = new GameManager();
+gameManager.init(20);
+
+document.body.style.backgroundColor = '#00BFFF';
 
 let container = document.createElement('div');
 document.body.appendChild(container);
@@ -25,11 +20,21 @@ container.style.height = '415px';
 container.style.backgroundColor = 'grey';
 
 let mask = document.createElement('div');
+let scoreAdustment = document.createElement('div');
+
+let scoreLabel = document.createElement('div');
+document.body.appendChild(scoreLabel);
+scoreLabel.innerText = `Score: ${gameManager.score}`;
+scoreLabel.style.position = 'absolute';
+scoreLabel.style.top = '450px';
+scoreLabel.style.left = '200px';
+scoreLabel.style.fontStyle = 'bold';
+scoreLabel.style.fontSize = '30px';
 
 let topOffset = 10;
 let leftOffset = 10;
 
-tiles.forEach(element => {
+gameManager.tiles.forEach(element => {
     let tile = document.createElement('div');
     document.body.appendChild(tile);
     tile.style.position = 'absolute';
@@ -56,7 +61,7 @@ tiles.forEach(element => {
 
     let label = document.createElement('div');
     cover.appendChild(label);
-    label.innerText = tiles.indexOf(element) + 1;
+    label.innerText = gameManager.tiles.indexOf(element) + 1;
     label.style.position = 'inherit';
     label.style.top = '30px'
     label.style.left = '37px'
@@ -66,12 +71,25 @@ tiles.forEach(element => {
     covers.push(cover);
 
     leftOffset += 101;
-    if ((tiles.indexOf(element) + 1) % 5 === 0) {
+    if ((gameManager.tiles.indexOf(element) + 1) % 5 === 0) {
         leftOffset = 10;
         topOffset += 101;
     }
 });
 
+let restart = function () {
+    tilesView.forEach(element => {
+        element.style.display = 'initial';
+    });
+
+    covers.forEach(element => {
+        element.style.display = 'initial';
+    });
+
+
+    mask.style.display = 'none';
+    scoreLabel.innerText = `Score: ${gameManager.score}`;
+}
 
 
 covers.forEach(cover => {
@@ -79,29 +97,93 @@ covers.forEach(cover => {
         cover.style.display = 'none';
         console.log(covers.indexOf(cover));
         let temp = [];
-        temp.push(tiles[covers.indexOf(cover)].id);
+        temp.push(gameManager.tiles[covers.indexOf(cover)].id);
         temp.push(covers.indexOf(cover));
-        selected.push(temp);
-        if (selected.length == 2) {
-            if (selected[0][0] === selected[1][0]) {
-                setTimeout(() => {
-                    tilesView[selected[0][1]].style.display = 'none';
-                    tilesView[selected[1][1]].style.display = 'none';
-                    selected = [];
-                }, 500);
-            } else {
+        gameManager.selected.push(temp);
+        if (gameManager.selected.length == 2) {
+            if (gameManager.selected[0][0] === gameManager.selected[1][0]) {
+                if (gameManager.score === 0 && gameManager.start) {
+                    scoreAdustment.innerText = '+ 10.000';
+                    scoreAdustment.style.top = '150px';
+                    scoreAdustment.style.left = '30px';
+                    scoreAdustment.style.fontSize = '120px';
+                    scoreAdustment.style.color = '#FFD700';
+                    gameManager.score += 10000;
+                    gameManager.start = !gameManager.start;
+                } else {
+                    scoreAdustment.innerText = '+ 1.000';
+                    scoreAdustment.style.top = '150px';
+                    scoreAdustment.style.left = '60px';
+                    scoreAdustment.style.fontSize = '120px';
+                    scoreAdustment.style.color = '#00FFFF';
+                    gameManager.score += 1000;
+                }
                 mask.style.display = 'initial';
                 setTimeout(() => {
-                    covers[selected[0][1]].style.display = 'initial';
-                    covers[selected[1][1]].style.display = 'initial';
-                    selected = [];
+                    tilesView[gameManager.selected[0][1]].style.display = 'none';
+                    tilesView[gameManager.selected[1][1]].style.display = 'none';
+                    gameManager.selected = [];
+                    mask.style.display = 'none';
+                }, 1000);
+            } else {
+                if (!gameManager.start) {
+                    scoreAdustment.innerText = '- 500';
+                    scoreAdustment.style.top = '150px';
+                    scoreAdustment.style.left = '100px';
+                    scoreAdustment.style.fontSize = '120px';
+                    scoreAdustment.style.color = '#DC143C';
+                    gameManager.score -= 500;
+                } else { scoreAdustment.innerText = ''; }
+                mask.style.display = 'initial';
+                setTimeout(() => {
+                    covers[gameManager.selected[0][1]].style.display = 'initial';
+                    covers[gameManager.selected[1][1]].style.display = 'initial';
+                    gameManager.selected = [];
                     mask.style.display = 'none';
                 }, 500);
             }
-            console.log(selected);
+            console.log(gameManager.selected);
         }
+
+        if (gameManager.score < 0) {
+            scoreAdustment.innerText = 'GAME OVER';
+            scoreAdustment.style.color = 'red';
+            scoreAdustment.style.top = '170px';
+            scoreAdustment.style.left = '50px';
+            scoreAdustment.style.fontSize = '70px';
+            mask.style.display = 'initial';
+            setTimeout(() => {
+                mask.style.display = 'none';
+                gameManager.init(20);
+                restart();
+            }, 2000);
+        }
+
+        let check = false;
+        covers.forEach(element => {
+            if (element.style.display !== 'none') {
+                check = true;
+            }
+        });
+        if (check === false) {
+            scoreAdustment.innerText = 'CONGRATULATION';
+            scoreAdustment.style.color = '#7FFF00';
+            scoreAdustment.style.top = '180px';
+            scoreAdustment.style.left = '30px';
+            scoreAdustment.style.fontSize = '50px';
+            mask.style.display = 'initial';
+            setTimeout(() => {
+                mask.style.display = 'none';
+                gameManager.init(20);
+                restart();
+            }, 2000);
+        }
+
+        scoreLabel.innerText = `Score: ${gameManager.score}`;
     });
 });
+
+
 
 document.body.appendChild(mask);
 mask.style.position = 'absolute';
@@ -111,5 +193,14 @@ mask.style.width = '510px';
 mask.style.height = '410px';
 mask.style.display = 'none';
 
-console.log(tiles);
+mask.appendChild(scoreAdustment);
+scoreAdustment.style.position = 'absolute';
+scoreAdustment.innerText = '+ 10.000';
+scoreAdustment.style.top = '150px';
+scoreAdustment.style.left = '30px';
+scoreAdustment.style.color = 'black';
+scoreAdustment.style.fontStyle = 'bold';
+scoreAdustment.style.fontSize = '120px';
+
+console.log(gameManager.tiles);
 console.log(covers);
