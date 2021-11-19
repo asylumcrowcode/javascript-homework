@@ -110,11 +110,11 @@ covers.forEach(cover => {
         if (gameManager.selected.length == 2) {
             if (gameManager.selected[0][0] === gameManager.selected[1][0]) {
                 if (gameManager.score === 0 && gameManager.start) {
-                    scoreAdjust('+ 10.000', '150px', '30px', '120px', '#FFD700');
+                    scoreAdjust('+ 10.000', '140px', '30px', '120px', '#FFD700');
                     gameManager.score += 10000;
                     gameManager.start = !gameManager.start;
                 } else {
-                    scoreAdjust('+ 1.000', '150px', '60px', '120px', '#00FFFF');
+                    scoreAdjust('+ 1.000', '140px', '60px', '120px', '#00FFFF');
                     gameManager.score += 1000;
                 }
                 mask.style.display = 'initial';
@@ -126,7 +126,7 @@ covers.forEach(cover => {
                 }, 1000);
             } else {
                 if (!gameManager.start) {
-                    scoreAdjust('- 500', '150px', '100px', '120px', '#DC143C');
+                    scoreAdjust('- 500', '140px', '100px', '120px', '#DC143C');
                     gameManager.score -= 500;
                 } else { scoreAdustment.innerText = ''; }
                 mask.style.display = 'initial';
@@ -157,7 +157,7 @@ covers.forEach(cover => {
             }
         });
         if (check === false) {
-            scoreAdjust('CONGRATULATIONS', '180px', '30px', '50px', '#7FFF00');
+            scoreAdjust('CONGRATULATIONS', '180px', '15px', '50px', '#7FFF00');
             mask.style.display = 'initial';
             setTimeout(() => {
                 mask.style.display = 'none';
@@ -178,7 +178,7 @@ mask.style.top = '5px';
 mask.style.left = '5px';
 mask.style.width = '510px';
 mask.style.height = '410px';
-mask.style.display = 'none';
+// mask.style.display = 'none';
 
 mask.appendChild(scoreAdustment);
 scoreAdustment.style.position = 'absolute';
@@ -188,6 +188,5 @@ scoreAdustment.style.left = '30px';
 scoreAdustment.style.color = 'black';
 scoreAdustment.style.fontStyle = 'bold';
 scoreAdustment.style.fontSize = '120px';
-
 console.log(gameManager.tiles);
 console.log(covers);
