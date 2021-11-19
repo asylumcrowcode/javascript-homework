@@ -178,7 +178,7 @@ mask.style.top = '5px';
 mask.style.left = '5px';
 mask.style.width = '510px';
 mask.style.height = '410px';
-// mask.style.display = 'none';
+mask.style.display = 'none';
 
 mask.appendChild(scoreAdustment);
 scoreAdustment.style.position = 'absolute';
